@@ -21,12 +21,13 @@ export default function HomePage() {
     completed: false,
   });
 
-  const handleValueChange = (key: string, value: any) => {
-    setNewTodo({
-      ...newTodo,
+  const handleValueChange = (key: string, value: string) => {
+    setNewTodo((prevState) => ({
+      ...prevState,
       [key]: value,
-    });
+    }));
   };
+
   return (
     <View style={styles.container}>
       <View>
@@ -37,6 +38,7 @@ export default function HomePage() {
           </TouchableOpacity>
         </Link>
       </View>
+
       <View>
         <Text style={styles.titleContainer}>Create todo</Text>
       </View>
@@ -45,11 +47,18 @@ export default function HomePage() {
         <TextInput
           style={styles.input}
           value={newTodo.title}
-          onChangeText={(event) =>
-            handleValueChange("title", (event.target as HTMLInputElement).value)
-          }
+          placeholder="Title"
+          onChangeText={(value) => handleValueChange("title", value)}
         />
-        <TextInput />
+        <TextInput
+          editable
+          multiline
+          numberOfLines={4}
+          style={styles.input}
+          value={newTodo.description}
+          placeholder="Description"
+          onChangeText={(value) => handleValueChange("description", value)}
+        />
       </View>
     </View>
   );
@@ -66,6 +75,8 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flex: 1,
+    display: "flex",
+    gap: 8,
   },
   backLink: {
     display: "flex",
@@ -76,12 +87,11 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    margin: 12,
-    borderWidth: 1,
     padding: 10,
+    backgroundColor: "#ecf8fa",
+    borderRadius: 8,
   },
   titleContainer: {
-    flex: 1,
     fontSize: 32,
     color: "#ecf8fa",
   },
