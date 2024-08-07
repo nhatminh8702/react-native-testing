@@ -1,15 +1,15 @@
 import { Dispatch, SetStateAction } from "react";
 
-export type todo = {
+export type Todo = {
   id: number;
   title: string;
   description: string;
   completed: boolean;
 };
 
-export type todoContext = {
-  todoList: todo[];
-  setTodoList: Dispatch<SetStateAction<todo[]>>;
+export type TodoContextType = {
+  todoList: Todo[];
+  setTodoList: Dispatch<SetStateAction<Todo[]>>;
   newId: number;
   setNewId: Dispatch<SetStateAction<number>>;
 };

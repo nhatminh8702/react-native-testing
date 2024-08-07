@@ -1,5 +1,6 @@
 {
   "expo": {
+    "jsEngine": "hermes",
     "name": "react-native-testing",
     "slug": "react-native-testing",
     "version": "1.0.0",

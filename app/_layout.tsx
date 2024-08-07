@@ -6,23 +6,17 @@ import {
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useEffect, useState } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { initData } from "@/constants/InitData";
-import { todo, todoContext } from "@/constants/Types";
+import { Todo, TodoContextType } from "@/constants/Types";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export const TodoContext = createContext<todoContext>({
+export const TodoContext = createContext<TodoContextType>({
   todoList: [],
   setTodoList: () => {},
   newId: 0,
@@ -30,7 +24,7 @@ export const TodoContext = createContext<todoContext>({
 });
 
 export default function RootLayout() {
-  const [todoList, setTodoList] = useState<todo[]>(initData);
+  const [todoList, setTodoList] = useState<Todo[]>(initData);
   const [newId, setNewId] = useState<number>(initData.length + 1);
 
   const colorScheme = useColorScheme();

@@ -1,25 +1,16 @@
 import AddIcon from "@/components/AddIcon";
-import TrashIcon from "@/components/TrashIcon";
-import { initData } from "@/constants/InitData";
-import { todo } from "@/constants/Types";
-import { CheckBox } from "@rneui/base";
+import { Todo } from "@/constants/Types";
 import { Link } from "expo-router";
-import { useContext, useMemo, useState } from "react";
-
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { useContext, useMemo } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TodoContext } from "./_layout";
+import TodoList from "@/components/TodoList";
 
 export default function HomePage() {
   const { todoList, setTodoList } = useContext(TodoContext);
 
   const handlePressCheckBox = (todoId: number) => {
-    let tempTodoList: todo[] = [];
+    let tempTodoList: Todo[] = [];
     todoList.forEach((todo) => {
       if (todo.id === todoId) {
         tempTodoList.push({
@@ -57,67 +48,19 @@ export default function HomePage() {
         </Link>
       </View>
 
-      <View>
-        <Text style={{ fontSize: 24, color: "#ecf8fa" }}>Completed</Text>
-        <FlatList
-          data={completedTodoList}
-          renderItem={({ item }) => (
-            <View style={styles.todoContainer}>
-              <View style={styles.todoHeader}>
-                <Text style={styles.todoTitle}>{item.title}</Text>
-                <TouchableOpacity onPress={() => handleDeleteTodo(item.id)}>
-                  <TrashIcon height={24} width={24} />
-                </TouchableOpacity>
+      <TodoList
+        title="Completed"
+        onDeleteTodo={handleDeleteTodo}
+        todoList={completedTodoList}
+        onCheckTodo={handlePressCheckBox}
+      />
 
-                <CheckBox
-                  containerStyle={{
-                    backgroundColor: "#ecf8fa",
-                    padding: 0,
-                  }}
-                  checked={item.completed ?? false}
-                  iconType="material-community"
-                  checkedIcon="checkbox-marked"
-                  uncheckedIcon="checkbox-blank-outline"
-                  onPress={() => handlePressCheckBox(item.id)}
-                />
-              </View>
-
-              <Text>{item.description}</Text>
-            </View>
-          )}
-        />
-      </View>
-      <View>
-        <Text style={{ fontSize: 24, color: "#ecf8fa" }}>On-going</Text>
-        <FlatList
-          data={onGoingTodoList}
-          renderItem={({ item }) => (
-            <View style={styles.todoContainer}>
-              <View style={styles.todoHeader}>
-                <Text style={styles.todoTitle}>{item.title}</Text>
-
-                <TouchableOpacity onPress={() => handleDeleteTodo(item.id)}>
-                  <TrashIcon height={24} width={24} />
-                </TouchableOpacity>
-
-                <CheckBox
-                  containerStyle={{
-                    backgroundColor: "#ecf8fa",
-                    padding: 0,
-                  }}
-                  checked={item.completed ?? false}
-                  iconType="material-community"
-                  checkedIcon="checkbox-marked"
-                  uncheckedIcon="checkbox-blank-outline"
-                  onPress={() => handlePressCheckBox(item.id)}
-                />
-              </View>
-
-              <Text>{item.description}</Text>
-            </View>
-          )}
-        />
-      </View>
+      <TodoList
+        title="On-going"
+        onDeleteTodo={handleDeleteTodo}
+        todoList={onGoingTodoList}
+        onCheckTodo={handlePressCheckBox}
+      />
     </View>
   );
 }

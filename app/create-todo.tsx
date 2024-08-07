@@ -7,14 +7,13 @@ import {
   View,
 } from "react-native";
 import { TodoContext } from "./_layout";
-import { Link } from "expo-router";
-
+import { Link, router } from "expo-router";
 import BackIcon from "@/components/BackIcon";
-import { todo } from "@/constants/Types";
+import { Todo } from "@/constants/Types";
 
 export default function HomePage() {
   const { todoList, setTodoList, newId, setNewId } = useContext(TodoContext);
-  const [newTodo, setNewTodo] = useState<todo>({
+  const [newTodo, setNewTodo] = useState<Todo>({
     id: newId,
     title: "",
     description: "",
@@ -26,6 +25,13 @@ export default function HomePage() {
       ...prevState,
       [key]: value,
     }));
+  };
+
+  const handleClickCreateTodo = () => {
+    setTodoList([...todoList, newTodo]);
+    const tempNewId = newId + 1;
+    setNewId(tempNewId);
+    router.navigate("/");
   };
 
   return (
@@ -53,12 +59,21 @@ export default function HomePage() {
         <TextInput
           editable
           multiline
-          numberOfLines={4}
-          style={styles.input}
+          style={styles.textArea}
           value={newTodo.description}
+          textAlignVertical="top"
           placeholder="Description"
           onChangeText={(value) => handleValueChange("description", value)}
         />
+      </View>
+
+      <View style={styles.buttonGroup}>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={handleClickCreateTodo}
+        >
+          <Text style={{ color: "#357da1", fontSize: 16 }}>Create</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -74,7 +89,6 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   inputContainer: {
-    flex: 1,
     display: "flex",
     gap: 8,
   },
@@ -85,11 +99,30 @@ const styles = StyleSheet.create({
     color: "#357da1",
     alignItems: "center",
   },
+  addButton: {
+    backgroundColor: "#ecf8fa",
+    color: "#20232a",
+    width: 80,
+    display: "flex",
+    alignItems: "center",
+    padding: 8,
+    borderRadius: 8,
+  },
+  buttonGroup: {
+    display: "flex",
+    flexDirection: "row-reverse",
+  },
   input: {
-    height: 40,
     padding: 10,
     backgroundColor: "#ecf8fa",
     borderRadius: 8,
+  },
+
+  textArea: {
+    padding: 10,
+    backgroundColor: "#ecf8fa",
+    borderRadius: 8,
+    minHeight: 200,
   },
   titleContainer: {
     fontSize: 32,
